@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nix — Context Intelligence Infrastructure for AI Coding Agents</title>
+  <meta name="description" content="Nix gives AI coding agents local-first, repository-aware context — so they can retrieve, understand, and verify the code that matters before they answer or act.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- 3. Minimalist Floating Navigation Bar -->
+  <div class="navbar-wrapper">
+    <nav class="navbar">
+      <a href="#" class="navbar-brand">
+        <div class="logo-symbol">N</div>
+        <span class="brand-text">Nix</span>
+        <span class="brand-desc">Context intelligence for AI coding agents</span>
+      </a>
+
+      <ul class="navbar-links">
+        <li><a href="#why-nix">Why Nix</a></li>
+        <li><a href="#playground">Playground</a></li>
+        <li><a href="#how-it-works">How it works</a></li>
+        <li><a href="#agents">Agents</a></li>
+        <li><a href="#cli">CLI</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+
+      <div class="navbar-actions">
+        <a href="https://github.com/nidonic/nidonic" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">GitHub</a>
+        <a href="#playground" class="btn btn-primary btn-sm">Try Playground</a>
+      </div>
+    </nav>
+  </div>
+
+  <!-- 4. HERO SECTION -->
+  <section class="hero-section">
+    <div class="container">
+      <div class="hero-content">
+        <div class="eyebrow eyebrow-pill">
+          <span>CONTEXT INFRASTRUCTURE FOR AI CODING AGENTS</span>
+        </div>
+
+        <h1 class="hero-title">
+          Give your coding agent context.<br>
+          Not another agent.
+          <span class="hero-rotator" id="hero-rotator">Understand the codebase.</span>
+        </h1>
+
+        <p class="hero-description">
+          Nix gives AI coding agents local-first, repository-aware context — so they can retrieve, understand, and verify the code that matters before they answer or act.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#playground" class="btn btn-primary">Try the Playground →</a>
+          <a href="https://github.com/nidonic/nidonic" target="_blank" rel="noopener" class="btn btn-secondary">View GitHub</a>
+        </div>
+
+        <div class="hero-trust">
+          <span>Local-first</span>
+          <span>·</span>
+          <span>Deterministic retrieval</span>
+          <span>·</span>
+          <span>Source-grounded context</span>
+        </div>
+      </div>
+
+      <!-- 5. HERO PRODUCT SIGNAL -->
+      <div class="hero-signal">
+        <div class="compact-terminal">
+          <div class="terminal-header">
+            <div class="terminal-dots">
+              <span class="terminal-dot red"></span>
+              <span class="terminal-dot yellow"></span>
+              <span class="terminal-dot green"></span>
+            </div>
+            <div class="terminal-meta">
+              <span>repository: google/zx</span>
+              <span>branch: main</span>
+              <span class="badge badge-pass"><span class="badge-dot"></span> indexed</span>
+            </div>
+          </div>
+          <div class="terminal-body">
+            <div><span class="terminal-prompt">$</span><span class="terminal-cmd">nix index</span></div>
+            <div class="terminal-output">Indexing repository: google/zx (139 files)
+Scanning source files... done
+Building typed code graph (64 edges, 9 modules)... done
+Generating searchable lexical & vector context... done
+<span class="green">✓ Index complete. 139 files indexed (474 chunks) into local SQLite.</span></div>
+
+            <div><span class="terminal-prompt">$</span><span class="terminal-cmd">nix ask "How does zx execute a shell command?"</span></div>
+            <div class="terminal-output"><span class="highlight">=== Nix Universal Context: "How does zx execute a shell command?" ===</span>
+
+Intents:     HOW, ARCHITECTURE
+Freshness:   Index [CURRENT], Git [CLEAN]
+Summary:     In zx, shell command execution follows a verified runtime pipeline:
+1. Entry point: The `$` tagged template function in `src/core.ts` constructs command strings with auto-quoting (`$.quote`) and returns a `ProcessPromise`.
+2. Execution trigger: Calling `.then()`, `await`, or inspecting the promise invokes `ProcessPromise.run()`.
+3. Subprocess spawning: `ProcessPromise.run()` delegates execution to `exec()` (imported from `zurk/spawn`), which calls Node.js `child_process.spawn`.
+4. Output handling: Stdout and stderr streams are buffered and resolved as a `ProcessOutput` object. Non-zero exit codes throw unless configured with `nothrow`.
+
+<span class="green">✓ 3 source files verified · ~26,068 tokens saved · 92% less context</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6, 7 & 8. NIX PLAYGROUND — MAIN PRODUCT DEMONSTRATION -->
+  <section class="playground-section" id="playground">
+    <div class="container">
+      <div class="section-header text-center">
+        <div class="eyebrow eyebrow-pill">
+          <span>THE NIX PLAYGROUND</span>
+        </div>
+        <h2>Run Nix against a real codebase.</h2>
+        <p>Explore Nix directly from the terminal. Index a repository, ask questions about its architecture, inspect retrieved context, and verify the result.</p>
+      </div>
+
+      <!-- Real repository verification badge & meta header -->
+      <div class="playground-header-meta">
+        <div class="meta-group">
+          <span class="meta-label">Repository:</span>
+          <span class="meta-val">google/zx</span>
+          <span class="badge badge-pass"><span class="badge-dot"></span> Indexed</span>
+        </div>
+        <div class="meta-group">
+          <span class="meta-label">Mode:</span>
+          <span class="meta-val">Local repository intelligence</span>
+        </div>
+        <div class="meta-group">
+          <span class="badge badge-neutral">Commit: 65fc542</span>
+          <span class="badge badge-neutral">139 files · 474 chunks</span>
+          <span class="badge badge-purple">Actual CLI Output</span>
+        </div>
+      </div>
+
+      <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 1rem; text-align: center; font-family: var(--font-mono);">
+        These are actual Nix outputs from the <code style="color: var(--text-primary);">google/zx</code> repository — not simulated product screenshots.
+      </div>
+
+      <!-- Playground Layout -->
+      <div class="playground-layout">
+        <!-- Sidebar Command Explorer -->
+        <div class="command-sidebar">
+          <button class="cmd-btn active" data-cmd="ask">
+            <span>ask</span>
+            <span class="cmd-tag">Q&A</span>
+          </button>
+          <button class="cmd-btn" data-cmd="oracle">
+            <span>oracle</span>
+            <span class="cmd-tag">Research</span>
+          </button>
+          <button class="cmd-btn" data-cmd="index">
+            <span>index</span>
+            <span class="cmd-tag">Index</span>
+          </button>
+          <button class="cmd-btn" data-cmd="search">
+            <span>search</span>
+            <span class="cmd-tag">Search</span>
+          </button>
+          <button class="cmd-btn" data-cmd="replay">
+            <span>replay</span>
+            <span class="cmd-tag">Drift</span>
+          </button>
+          <button class="cmd-btn" data-cmd="blastRadius">
+            <span>blast-radius</span>
+            <span class="cmd-tag">Graph</span>
+          </button>
+          <button class="cmd-btn" data-cmd="why">
+            <span>why</span>
+            <span class="cmd-tag">Git</span>
+          </button>
+          <button class="cmd-btn" data-cmd="health">
+            <span>health</span>
+            <span class="cmd-tag">Audit</span>
+          </button>
+          <button class="cmd-btn" data-cmd="tree">
+            <span>tree</span>
+            <span class="cmd-tag">Structure</span>
+          </button>
+          <button class="cmd-btn" data-cmd="doctor">
+            <span>doctor</span>
+            <span class="cmd-tag">Diagnostics</span>
+          </button>
+        </div>
+
+        <!-- Playground Viewer -->
+        <div class="playground-viewer">
+          <div class="viewer-topbar">
+            <div class="viewer-cmd-display">
+              <span class="terminal-prompt">$</span>
+              <span id="viewer-cmd-text" style="color: var(--text-primary); font-weight: 600;">nix ask "How does zx execute a shell command?"</span>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <span class="badge badge-neutral" id="viewer-duration">420ms</span>
+              <div class="viewer-subtabs">
+                <button class="subtab-btn active" data-tab="terminal">Terminal Output</button>
+                <button class="subtab-btn" data-tab="context">Retrieved Context</button>
+                <button class="subtab-btn" data-tab="verification">Verification Report</button>
+              </div>
+              <button class="btn btn-secondary btn-sm" id="copy-cmd-btn" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg> Copy
+              </button>
+            </div>
+          </div>
+
+          <!-- Secondary interactive query bar -->
+          <div class="viewer-interactive-bar" id="interactive-bar" style="display: none;">
+            <span id="interactive-label" style="font-weight: 600; color: var(--text-muted); text-transform: uppercase;">Select:</span>
+            <select class="interactive-selector" id="interactive-selector"></select>
+          </div>
+
+          <!-- Tab Content Views -->
+          <div class="viewer-content-area" id="terminal-view">
+            <pre></pre>
+          </div>
+
+          <div class="context-inspector" id="context-view" style="display: none;"></div>
+          <div class="context-inspector" id="verification-view" style="display: none;"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. NIX ARCHITECTURE -->
+  <section class="container" id="how-it-works">
+    <div class="section-header text-center">
+      <div class="eyebrow eyebrow-pill">
+        <span>HOW NIX WORKS</span>
+      </div>
+      <h2>Retrieve. Understand. Verify.</h2>
+      <p>A deterministic three-stage intelligence pipeline that runs locally on your machine.</p>
+    </div>
+
+    <div class="arch-grid">
+      <!-- 01 Retrieve -->
+      <div class="arch-card">
+        <div class="arch-step">01 — RETRIEVE</div>
+        <h3>Repository Search</h3>
+        <p>Nix indexes code into lexical chunks and local vector embeddings, performing sub-100ms hybrid retrieval without sending source files to external clouds.</p>
+        <div class="arch-pipeline">
+          <div class="arch-node">Repository Files (139 files)</div>
+          <div class="arch-arrow">↓</div>
+          <div class="arch-node">AST & Lexical Indexer</div>
+          <div class="arch-arrow">↓</div>
+          <div class="arch-node">SQLite Local Store (.nix/nix.db)</div>
+          <div class="arch-arrow">↓</div>
+          <div class="arch-node">Targeted Code Chunks</div>
+        </div>
+      </div>
+
+      <!-- 02 Understand -->
+      <div class="arch-card">
+        <div class="arch-step">02 — UNDERSTAND</div>
+        <h3>Topological Code Graph</h3>
+        <p>Connects isolated source files into a typed dependency network. Tracks symbols, callers, blast radius, module hubs, and Git commit history.</p>
+        <div class="arch-pipeline">
+          <div class="arch-node">AST Symbols (Tree-sitter)</div>
+          <div class="arch-arrow">↓</div>
+          <div class="arch-node">Dependency Graph (64 edges)</div>
+          <div class="arch-arrow">↓</div>
+          <div class="arch-node">Module Hub Hierarchy</div>
+          <div class="arch-arrow">↓</div>
+          <div class="arch-node">System Architecture Model</div>
+        </div>
+      </div>
+
+      <!-- 03 Verify -->
+      <div class="arch-card">
+        <div class="arch-step">03 — VERIFY</div>
+        <h3>Source-Grounded Verification</h3>
+        <p>Verifies generated answers and agent prompts against actual repository lines. Tracks code drift cryptographically with deterministic replay.</p>
+        <div class="arch-pipeline">
+          <div class="arch-node">Agent Output / Claim</div>
+          <div class="arch-arrow">↓</div>
+          <div class="arch-node">Exact Line Reference Check</div>
+          <div class="arch-arrow">↓</div>
+          <div class="arch-node">Cryptographic Trace Recording</div>
+          <div class="arch-arrow">↓</div>
+          <div class="arch-node">Verified Context (0% Drift)</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. WHY NIX -->
+  <section class="container" id="why-nix">
+    <div class="section-header text-center">
+      <div class="eyebrow eyebrow-pill">
+        <span>WHY NIX</span>
+      </div>
+      <h2>AI coding agents need more than search.</h2>
+      <p>Generic RAG dumps raw files into context windows. Nix provides structured, verified codebase intelligence.</p>
+    </div>
+
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="badge badge-neutral" style="margin-bottom: 0.75rem;">01</div>
+        <h3>Repository-aware</h3>
+        <p>Nix understands the whole codebase as an integrated dependency graph rather than treating source files as disconnected text blobs.</p>
+      </div>
+
+      <div class="why-card">
+        <div class="badge badge-neutral" style="margin-bottom: 0.75rem;">02</div>
+        <h3>Local-first</h3>
+        <p>Your source code, index, embeddings, repository context, and memories remain strictly on your local machine with zero forced cloud uploads.</p>
+      </div>
+
+      <div class="why-card">
+        <div class="badge badge-neutral" style="margin-bottom: 0.75rem;">03</div>
+        <h3>Source-grounded</h3>
+        <p>Every answer, symbol, and architectural relationship is tied directly back to exact repository files and line numbers with proof.</p>
+      </div>
+
+      <div class="why-card">
+        <div class="badge badge-neutral" style="margin-bottom: 0.75rem;">04</div>
+        <h3>Agent-ready</h3>
+        <p>Built to empower external coding agents (Claude Code, Cursor, Cline, Antigravity) through the Model Context Protocol (MCP) rather than replacing them.</p>
+      </div>
+
+      <div class="why-card">
+        <div class="badge badge-neutral" style="margin-bottom: 0.75rem;">05</div>
+        <h3>Deterministic</h3>
+        <p>Research traces are recorded and cryptographically replayed over time to verify that conclusions remain valid as the codebase changes.</p>
+      </div>
+
+      <div class="why-card">
+        <div class="badge badge-neutral" style="margin-bottom: 0.75rem;">06</div>
+        <h3>Developer controlled</h3>
+        <p>No proprietary black boxes. Use Nix directly through a fast CLI, script it via headless JSON flags, or connect via local HTTP API.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11. THE AGENT WORKFLOW -->
+  <section class="container" id="agents">
+    <div class="workflow-box">
+      <div class="eyebrow eyebrow-pill">
+        <span>BUILT FOR EXISTING AGENTS</span>
+      </div>
+      <h2>Nix gives your agent the context layer.</h2>
+      <p style="max-width: 600px; margin: 0.75rem auto 0;">Nix does not try to replace your coding agent. It gives the agent better context to work with.</p>
+
+      <div class="agent-flow-diagram">
+        <div class="flow-step-box">Local Repository<br><span style="font-size: 0.7rem; color: var(--text-muted);">Source, Git, Docs</span></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step-box highlight">Nix Context Engine<br><span style="font-size: 0.7rem; color: #A1A1AA;">Local Index & Graph</span></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step-box">MCP Protocol<br><span style="font-size: 0.7rem; color: var(--text-muted);">Standard Tool Calls</span></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step-box">AI Coding Agent<br><span style="font-size: 0.7rem; color: var(--text-muted);">Accurate Execution</span></div>
+      </div>
+
+      <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-top: 2rem;">
+        Compatible with all leading coding workflows:
+      </div>
+
+      <div class="agents-supported-list">
+        <span class="agent-pill">Claude Code</span>
+        <span class="agent-pill">Cursor</span>
+        <span class="agent-pill">Cline</span>
+        <span class="agent-pill">OpenAI Codex</span>
+        <span class="agent-pill">Google Antigravity</span>
+        <span class="agent-pill">Windsurf</span>
+        <span class="agent-pill">OpenCode</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12. TERMINAL-FIRST PRODUCT SECTION -->
+  <section class="container" id="cli">
+    <div class="section-header text-center">
+      <div class="eyebrow eyebrow-pill">
+        <span>THE CLI</span>
+      </div>
+      <h2>Everything starts from the terminal.</h2>
+      <p>A fast, expressive developer CLI designed for automation and daily developer workflows.</p>
+    </div>
+
+    <div class="cli-grid">
+      <div class="cli-card">
+        <div class="cli-card-cmd">$ nix setup</div>
+        <div class="cli-card-desc">Auto-configure Nix MCP servers for detected coding agents.</div>
+      </div>
+      <div class="cli-card">
+        <div class="cli-card-cmd">$ nix init</div>
+        <div class="cli-card-desc">Initialize a new Nix intelligence workspace in any repository.</div>
+      </div>
+      <div class="cli-card">
+        <div class="cli-card-cmd">$ nix index</div>
+        <div class="cli-card-desc">Build local incremental repository intelligence and AST chunks.</div>
+      </div>
+      <div class="cli-card">
+        <div class="cli-card-cmd">$ nix search &lt;query&gt;</div>
+        <div class="cli-card-desc">Fast hybrid lexical + semantic search across code and symbols.</div>
+      </div>
+      <div class="cli-card">
+        <div class="cli-card-cmd">$ nix ask &lt;question&gt;</div>
+        <div class="cli-card-desc">Universal Context: Ask source-grounded questions with 90%+ context savings.</div>
+      </div>
+      <div class="cli-card">
+        <div class="cli-card-cmd">$ nix tree</div>
+        <div class="cli-card-desc">Inspect repository module tree and file distribution.</div>
+      </div>
+      <div class="cli-card">
+        <div class="cli-card-cmd">$ nix doctor</div>
+        <div class="cli-card-desc">Diagnose Nix environment, SQLite engine, and indexing health.</div>
+      </div>
+      <div class="cli-card">
+        <div class="cli-card-cmd">$ nix health --verbose</div>
+        <div class="cli-card-desc">Audit repository intelligence health, dead code, and test coverage gaps.</div>
+      </div>
+      <div class="cli-card">
+        <div class="cli-card-cmd">$ nix mcp</div>
+        <div class="cli-card-desc">Start stdio Model Context Protocol server for AI coding agents.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 13. REAL DEVELOPER ARTIFACTS -->
+  <section class="container">
+    <div class="section-header text-center">
+      <div class="eyebrow eyebrow-pill">
+        <span>INSPECTABLE INTELLIGENCE</span>
+      </div>
+      <h2>Real developer artifacts. Not marketing mocks.</h2>
+      <p>Explore structured metadata extracted directly from the codebase.</p>
+    </div>
+
+    <div class="artifacts-grid">
+      <!-- Artifact 1: Repository Module Tree -->
+      <div class="artifact-card">
+        <div class="artifact-card-header">
+          <span>MODULE HIERARCHY</span>
+          <span class="badge badge-neutral">9 Modules · google/zx</span>
+        </div>
+        <div class="artifact-card-body">
+          <div style="color: var(--text-muted); font-size: 0.75rem; margin-bottom: 0.5rem;">// Codebase structural breakdown</div>
+          <div>src/ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(17 files, TypeScript core runtime)</div>
+          <div>├── core.ts &nbsp;&nbsp;&nbsp;&nbsp;[Hub: 6 connections, tagged template $]</div>
+          <div>├── cli.ts &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Hub: 9 connections, autorun()]</div>
+          <div>├── globals.ts &nbsp;[Hub: 9 connections]</div>
+          <div>test/ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(45 files, Node test runner)</div>
+          <div>docs/ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(26 files, VitePress documentation)</div>
+          <div>scripts/ &nbsp;&nbsp;&nbsp;&nbsp;(12 files, Build & packaging utilities)</div>
+        </div>
+      </div>
+
+      <!-- Artifact 2: Blast Radius & Impact -->
+      <div class="artifact-card">
+        <div class="artifact-card-header">
+          <span>BLAST RADIUS ANALYSIS</span>
+          <span class="badge badge-warn">Target: src/core.ts</span>
+        </div>
+        <div class="artifact-card-body">
+          <div style="color: var(--text-muted); font-size: 0.75rem; margin-bottom: 0.5rem;">// Topological impact mapping</div>
+          <div>Direct Dependents: <span style="font-weight: 600; color: var(--text-primary);">4 files</span></div>
+          <div>Indirect Dependents: <span style="font-weight: 600; color: var(--text-primary);">17 files</span></div>
+          <div>Total Affected: <span style="font-weight: 600; color: var(--text-primary);">21 files in repository</span></div>
+          <div style="margin-top: 0.5rem; color: var(--accent-pass); font-weight: 500;">
+            ✓ Affected test suites to re-run: 10 suites (test/core.test.js, test/all.test.js, test/cli.test.js...)
+          </div>
+        </div>
+      </div>
+
+      <!-- Artifact 3: Symbol Definition -->
+      <div class="artifact-card">
+        <div class="artifact-card-header">
+          <span>AST SYMBOL LOOKUP</span>
+          <span class="badge badge-pass">ProcessPromise</span>
+        </div>
+        <div class="artifact-card-body">
+          <div style="color: var(--text-muted); font-size: 0.75rem; margin-bottom: 0.5rem;">// Verified AST line declaration</div>
+          <div>Symbol: <code style="color: #0284C7;">class ProcessPromise&lt;T&gt; extends Promise&lt;ProcessOutput&gt;</code></div>
+          <div>Declared in: <code style="color: var(--text-primary);">src/core.ts:212</code></div>
+          <div>Inherits: <code style="color: var(--text-secondary);">Promise&lt;ProcessOutput&gt;</code></div>
+          <div>Exposes: <code style="color: var(--text-secondary);">run(), pipe(), nothrow(), timeout(), kill()</code></div>
+        </div>
+      </div>
+
+      <!-- Artifact 4: Git Intent Provenance -->
+      <div class="artifact-card">
+        <div class="artifact-card-header">
+          <span>GIT COMMIT ATTRIBUTION</span>
+          <span class="badge badge-purple">Confidence: 85%</span>
+        </div>
+        <div class="artifact-card-body">
+          <div style="color: var(--text-muted); font-size: 0.75rem; margin-bottom: 0.5rem;">// Why is ProcessPromise lazy?</div>
+          <div>Commit: <code style="color: var(--text-primary);">7a0f1332</code> ("fix: enable .sync shortcut for $")</div>
+          <div>Commit: <code style="color: var(--text-primary);">1148286f</code> ("refactor: assert promise cmd chunks")</div>
+          <div>Author: Anton Golub</div>
+          <div style="margin-top: 0.5rem; font-size: 0.75rem; color: var(--text-secondary);">
+            Rationale: Execution triggers upon await / .then() to allow chainable configurations (.pipe, .nothrow) before spawn.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 14. LOCAL-FIRST -->
+  <section class="container">
+    <div class="workflow-box" style="padding: 3rem 2rem;">
+      <div class="eyebrow eyebrow-pill">
+        <span>LOCAL BY DEFAULT</span>
+      </div>
+      <h2>Your code stays where you expect it to.</h2>
+      <p style="max-width: 640px; margin: 0.75rem auto 2rem;">
+        Everything runs locally on your developer machine. Nix indexes directly into an on-disk SQLite database with local embeddings and zero required cloud telemetry.
+      </p>
+
+      <div class="agent-flow-diagram" style="margin: 1.5rem 0;">
+        <div class="flow-step-box">Local Repository<br><code style="font-size: 0.7rem;">C:\projects\zx</code></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step-box highlight">Local Nix Index<br><code style="font-size: 0.7rem;">.nix/nix.db</code></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step-box">Local Embeddings<br><code style="font-size: 0.7rem;">On-device vectors</code></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step-box">Local Agent MCP<br><code style="font-size: 0.7rem;">stdio IPC</code></div>
+      </div>
+
+      <div class="why-grid" style="grid-template-columns: repeat(4, 1fr); margin-top: 2rem; text-align: left;">
+        <div style="padding: 0.5rem;">
+          <div style="font-weight: 600; font-size: 0.8125rem; color: var(--text-primary);">No mandatory cloud index</div>
+          <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">Indexes stay in your local <code style="font-family: var(--font-mono);">.nix</code> directory.</div>
+        </div>
+        <div style="padding: 0.5rem;">
+          <div style="font-weight: 600; font-size: 0.8125rem; color: var(--text-primary);">No mandatory account</div>
+          <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">Install with npm and start using immediately.</div>
+        </div>
+        <div style="padding: 0.5rem;">
+          <div style="font-weight: 600; font-size: 0.8125rem; color: var(--text-primary);">No forced source upload</div>
+          <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">Code never leaves your developer laptop.</div>
+        </div>
+        <div style="padding: 0.5rem;">
+          <div style="font-weight: 600; font-size: 0.8125rem; color: var(--text-primary);">Zero external lock-in</div>
+          <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">Open SQLite schemas and JSON artifacts.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 15. DEVELOPER EXPERIENCE -->
+  <section class="container">
+    <div class="section-header text-center">
+      <div class="eyebrow eyebrow-pill">
+        <span>FOR DEVELOPERS</span>
+      </div>
+      <h2>Install. Index. Ask.</h2>
+      <p>Three commands to give your coding assistant full repository intelligence.</p>
+    </div>
+
+    <div class="onboarding-grid">
+      <div class="step-card">
+        <div class="step-num">01 — INSTALL</div>
+        <h3>Install Nix Globally</h3>
+        <p style="font-size: 0.875rem; margin-bottom: 1.25rem;">Install the CLI package via npm or pnpm in seconds.</p>
+        <div class="code-snippet">
+          <code>npm install -g nixai</code>
+          <button class="copy-btn copy-code-btn" data-code="npm install -g nixai" title="Copy command">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-num">02 — INDEX</div>
+        <h3>Index Any Project</h3>
+        <p style="font-size: 0.875rem; margin-bottom: 1.25rem;">Scan and build local AST symbols and code graph.</p>
+        <div class="code-snippet">
+          <code>nix index</code>
+          <button class="copy-btn copy-code-btn" data-code="nix index" title="Copy command">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-num">03 — ASK</div>
+        <h3>Query Code Intelligence</h3>
+        <p style="font-size: 0.875rem; margin-bottom: 1.25rem;">Ask source-grounded questions or configure MCP for agents.</p>
+        <div class="code-snippet">
+          <code>nix ask "How does this repo work?"</code>
+          <button class="copy-btn copy-code-btn" data-code='nix ask "How does this repo work?"' title="Copy command">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 16. NIX PLAYGROUND CTA -->
+  <section class="container">
+    <div class="workflow-box" style="background: #111318; color: #FFF; border-color: #262A35;">
+      <div class="eyebrow" style="color: #94A3B8;">
+        <span>ACTUAL NIX DEMO · GOOGLE/ZX</span>
+      </div>
+      <h2 style="color: #FFF; margin-top: 0.5rem;">Don't read about Nix.<br>Run it.</h2>
+      <p style="color: #94A3B8; max-width: 580px; margin: 0.75rem auto 1.75rem;">
+        Open the interactive playground and explore Nix operating against the <code style="color: #FFF;">google/zx</code> repository using the actual CLI workflow.
+      </p>
+
+      <div style="display: flex; justify-content: center; gap: 0.75rem; margin-bottom: 1.5rem;">
+        <a href="#playground" class="btn" style="background: #FFF; color: #10151C;">Open Playground →</a>
+        <a href="https://github.com/google/zx" target="_blank" rel="noopener" class="btn" style="background: #1A1D24; color: #FFF; border-color: #333842;">View zx Repository →</a>
+      </div>
+
+      <div style="font-family: var(--font-mono); font-size: 0.75rem; color: #64748B;">
+        REAL REPOSITORY: google/zx · ACTUAL NIX OUTPUT
+      </div>
+    </div>
+  </section>
+
+  <!-- 17. DEVELOPER TRUST -->
+  <section class="container">
+    <div class="why-grid" style="grid-template-columns: repeat(4, 1fr);">
+      <div class="why-card">
+        <div class="badge badge-neutral" style="margin-bottom: 0.5rem;">OPEN SOURCE</div>
+        <h3>Inspectable Code</h3>
+        <p>Explore the repository, verify the architecture, and contribute to the local context engine on GitHub.</p>
+      </div>
+
+      <div class="why-card">
+        <div class="badge badge-neutral" style="margin-bottom: 0.5rem;">CLI-FIRST</div>
+        <h3>Terminal Native</h3>
+        <p>Designed for developers who work in the shell. Human-readable tables, colorized trees, and headless JSON flags.</p>
+      </div>
+
+      <div class="why-card">
+        <div class="badge badge-neutral" style="margin-bottom: 0.5rem;">MCP NATIVE</div>
+        <h3>Standard Protocol</h3>
+        <p>Native Model Context Protocol server lets Claude Code, Cursor, and custom agent loops call Nix tools over stdio.</p>
+      </div>
+
+      <div class="why-card">
+        <div class="badge badge-neutral" style="margin-bottom: 0.5rem;">LOCAL-FIRST</div>
+        <h3>Private by Design</h3>
+        <p>Repository intelligence stays entirely on your computer under direct developer control.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 18. FAQ SECTION -->
+  <section class="container" id="faq">
+    <div class="section-header text-center">
+      <div class="eyebrow eyebrow-pill">
+        <span>QUESTIONS & ANSWERS</span>
+      </div>
+      <h2>Frequently Asked Questions</h2>
+      <p>Technical details on how Nix operates, indexes, and integrates with coding agents.</p>
+    </div>
+
+    <div class="container-narrow">
+      <div class="faq-list">
+        <div class="faq-item open">
+          <button class="faq-question">
+            <span>What is Nix?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            Nix is a local-first context intelligence infrastructure layer for software codebases. It indexes your source files into a typed dependency graph, extracts symbols, captures Git commit timelines, and exposes source-grounded context to AI coding agents via CLI and the Model Context Protocol (MCP).
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Is Nix another AI coding agent?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            No. Nix is not an agent and does not try to replace your existing tools. Instead, Nix acts as the intelligence and context layer underneath agents like Claude Code, Cursor, Cline, or Antigravity, feeding them precise repository context so they don't hallucinate.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Does Nix upload my repository?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            No. Nix operates locally by default. The SQLite index database (<code style="font-family: var(--font-mono);">.nix/nix.db</code>), embeddings, code chunks, and Git provenance stay stored directly on your machine.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>What does <code style="font-family: var(--font-mono);">nix index</code> do?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <code style="font-family: var(--font-mono);">nix index</code> scans your workspace, excludes ignored build/vendor files, parses AST declarations using Tree-sitter, builds a typed import/dependency graph, extracts semantic chunks, and persists them into a local SQLite database for fast retrieval.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>What is <code style="font-family: var(--font-mono);">nix ask</code>?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <code style="font-family: var(--font-mono);">nix ask</code> evaluates natural-language questions against the codebase. It parses developer intent (e.g. HOW, WHERE, ARCHITECTURE), extracts relevant topological symbols and files, and generates a token-compressed, source-grounded context package (typically saving 90%+ context tokens).
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>How does Nix verify context?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            Nix checks referenced file paths, symbol declarations, and relationships directly against the indexed AST. In addition, <code style="font-family: var(--font-mono);">nix replay</code> re-evaluates research traces against current workspace files to report a cryptographic Code Drift Score.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>What coding agents can use Nix?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            Any tool or agent supporting the Model Context Protocol (MCP) or command-line scripting can use Nix, including Claude Code, Cursor, Cline, Google Antigravity, Windsurf, OpenCode, and custom internal agent pipelines.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>What is the Nix Playground?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            The Nix Playground is an interactive terminal interface that lets you test Nix commands directly against real repositories in your browser, viewing exact stdout, retrieved context, and AST line numbers.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Can I run Nix locally?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            Yes. Run <code style="font-family: var(--font-mono);">npm install -g nixai</code> and execute <code style="font-family: var(--font-mono);">nix init</code> in any of your repositories. It requires Node.js >= 20 and has no external server prerequisites.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>What repository is used in the Playground demo?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            The Playground currently demonstrates Nix against the Google <code style="font-family: var(--font-mono);">zx</code> repository. The displayed terminal results correspond to actual Nix execution against that repository commit (<code style="font-family: var(--font-mono);">65fc542</code>).
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 19. FINAL CTA -->
+  <section class="final-cta-section">
+    <div class="container">
+      <div class="final-cta-box">
+        <div class="eyebrow eyebrow-pill">
+          <span>CONTEXT FOR YOUR CODE</span>
+        </div>
+        <h2>Give your coding agent the context it needs.</h2>
+        <p>Index your repository. Explore its structure. Retrieve the right context. Verify the answer.</p>
+
+        <div style="display: flex; justify-content: center; gap: 0.75rem;">
+          <a href="#playground" class="btn btn-primary">Try Nix Playground →</a>
+          <a href="https://github.com/nidonic/nidonic" target="_blank" rel="noopener" class="btn btn-secondary">Read the Documentation</a>
+        </div>
+
+        <div class="final-terminal-deco">
+          <div><span class="terminal-prompt">$</span>nix index</div>
+          <div><span class="terminal-prompt">$</span>nix ask "How does this codebase work?"</div>
+          <div style="margin-top: 0.5rem; color: #34D399;">
+            LOCAL-FIRST · REPOSITORY-AWARE · SOURCE-GROUNDED
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 20. FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand" style="max-width: 320px;">
+          <h4>Nix</h4>
+          <p style="font-size: 0.8125rem; color: var(--text-muted); margin-bottom: 0.75rem;">
+            Context intelligence for AI coding agents.
+          </p>
+          <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-secondary);">
+            Local-first · Typed Graph · MCP Native
+          </div>
+        </div>
+
+        <div class="footer-nav">
+          <div class="footer-col">
+            <h5>Product</h5>
+            <ul>
+              <li><a href="#playground">Playground</a></li>
+              <li><a href="#how-it-works">How it works</a></li>
+              <li><a href="#why-nix">Why Nix</a></li>
+              <li><a href="#agents">Agents</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-col">
+            <h5>Developers</h5>
+            <ul>
+              <li><a href="#cli">CLI Reference</a></li>
+              <li><a href="https://github.com/nidonic/nidonic" target="_blank" rel="noopener">GitHub</a></li>
+              <li><a href="#faq">FAQ</a></li>
+              <li><a href="https://www.npmjs.com/package/nixai" target="_blank" rel="noopener">npm Package</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-col">
+            <h5>Project</h5>
+            <ul>
+              <li><a href="#">About Nidonic</a></li>
+              <li><a href="#">Changelog</a></li>
+              <li><a href="#">Roadmap</a></li>
+              <li><a href="#">License (MIT)</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>
+          Nix is built for developers who want their coding agents to understand the codebase before they act.
+        </div>
+        <div>
+          © 2026 Nidonic. All rights reserved.
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
